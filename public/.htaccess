@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^league/(\d+)$ league.php?id=$1 [L,QSA]
+RewriteRule ^match/(\d+)$ match.php?id=$1 [L,QSA]
+RewriteRule ^events/(\d+)$ events.php?fixture=$1 [L,QSA]
+RewriteRule ^stats/(\d+)$ stats.php?fixture=$1 [L,QSA]
+RewriteRule ^scorers/(\d+)$ scorers.php?league=$1 [L,QSA]
+RewriteRule ^standings/(\d+)$ standings.php?league=$1 [L,QSA]
