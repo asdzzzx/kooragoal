@@ -1,0 +1,153 @@
+CREATE TABLE IF NOT EXISTS leagues (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    api_id INT NOT NULL UNIQUE,
+    name VARCHAR(150) NOT NULL,
+    country VARCHAR(150) DEFAULT NULL,
+    season INT NOT NULL,
+    type VARCHAR(50) DEFAULT 'league',
+    logo VARCHAR(255) DEFAULT NULL,
+    last_update TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS teams (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    team_id INT NOT NULL UNIQUE,
+    name VARCHAR(150) NOT NULL,
+    country VARCHAR(150) DEFAULT NULL,
+    founded INT DEFAULT NULL,
+    logo VARCHAR(255) DEFAULT NULL,
+    venue VARCHAR(255) DEFAULT NULL,
+    short_code VARCHAR(10) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS players (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    player_id INT NOT NULL UNIQUE,
+    team_id INT DEFAULT NULL,
+    name VARCHAR(150) NOT NULL,
+    nationality VARCHAR(150) DEFAULT NULL,
+    age INT DEFAULT NULL,
+    position VARCHAR(50) DEFAULT NULL,
+    photo VARCHAR(255) DEFAULT NULL,
+    height VARCHAR(50) DEFAULT NULL,
+    weight VARCHAR(50) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_players_team (team_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS fixtures (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fixture_id INT NOT NULL UNIQUE,
+    league_id INT NOT NULL,
+    season INT NOT NULL,
+    round VARCHAR(100) DEFAULT NULL,
+    status_short VARCHAR(10) DEFAULT NULL,
+    status_long VARCHAR(50) DEFAULT NULL,
+    fixture_timestamp INT DEFAULT NULL,
+    fixture_date DATETIME NOT NULL,
+    referee VARCHAR(150) DEFAULT NULL,
+    venue VARCHAR(255) DEFAULT NULL,
+    home_team_id INT NOT NULL,
+    home_team_name VARCHAR(150) NOT NULL,
+    home_team_logo VARCHAR(255) DEFAULT NULL,
+    away_team_id INT NOT NULL,
+    away_team_name VARCHAR(150) NOT NULL,
+    away_team_logo VARCHAR(255) DEFAULT NULL,
+    goals_home INT DEFAULT NULL,
+    goals_away INT DEFAULT NULL,
+    halftime_home INT DEFAULT NULL,
+    halftime_away INT DEFAULT NULL,
+    fulltime_home INT DEFAULT NULL,
+    fulltime_away INT DEFAULT NULL,
+    extratime_home INT DEFAULT NULL,
+    extratime_away INT DEFAULT NULL,
+    penalty_home INT DEFAULT NULL,
+    penalty_away INT DEFAULT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_fixtures_league (league_id),
+    INDEX idx_fixtures_status (status_short)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fixture_id INT NOT NULL,
+    time_elapsed INT DEFAULT NULL,
+    time_extra INT DEFAULT NULL,
+    team_id INT DEFAULT NULL,
+    player_id INT DEFAULT NULL,
+    assist_id INT DEFAULT NULL,
+    type VARCHAR(100) DEFAULT NULL,
+    detail VARCHAR(100) DEFAULT NULL,
+    comments VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_event (fixture_id, time_elapsed, time_extra, team_id, player_id, type, detail)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS statistics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fixture_id INT NOT NULL,
+    team_id INT NOT NULL,
+    type VARCHAR(150) NOT NULL,
+    value VARCHAR(150) DEFAULT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_stats (fixture_id, team_id, type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS lineups (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fixture_id INT NOT NULL,
+    team_id INT NOT NULL,
+    formation VARCHAR(50) DEFAULT NULL,
+    coach VARCHAR(150) DEFAULT NULL,
+    starting TEXT,
+    substitutes TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_lineup (fixture_id, team_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS standings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    league_id INT NOT NULL,
+    season INT NOT NULL,
+    team_id INT NOT NULL,
+    rank INT NOT NULL,
+    points INT DEFAULT NULL,
+    goals_diff INT DEFAULT NULL,
+    form VARCHAR(50) DEFAULT NULL,
+    group_name VARCHAR(100) DEFAULT NULL,
+    matches_played INT DEFAULT NULL,
+    wins INT DEFAULT NULL,
+    draws INT DEFAULT NULL,
+    losses INT DEFAULT NULL,
+    goals_for INT DEFAULT NULL,
+    goals_against INT DEFAULT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_standings (league_id, season, team_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS scorers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    league_id INT NOT NULL,
+    season INT NOT NULL,
+    player_id INT NOT NULL,
+    team_id INT DEFAULT NULL,
+    rank INT DEFAULT NULL,
+    games INT DEFAULT NULL,
+    goals INT DEFAULT NULL,
+    assists INT DEFAULT NULL,
+    penalties INT DEFAULT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_scorers (league_id, season, player_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS backups (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    file_path VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
