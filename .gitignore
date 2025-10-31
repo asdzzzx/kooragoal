@@ -1,0 +1,7 @@
+storage/cache/*
+storage/logs/*
+storage/backups/*
+!storage/.gitignore
+!storage/cache/
+!storage/logs/
+!storage/backups/
