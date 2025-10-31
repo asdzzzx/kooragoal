@@ -6,10 +6,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-function ensure_admin(): void
+function ensure_admin(string $redirectPath = '/admin/index.php'): void
 {
     if (empty($_SESSION['admin_authenticated'])) {
-        header('Location: index.php');
+        header('Location: ' . $redirectPath);
         exit;
     }
 }
