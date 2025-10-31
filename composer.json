@@ -1,0 +1,11 @@
+{
+    "name": "kooragoal/platform",
+    "description": "Local football data platform with smart scheduler",
+    "type": "project",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Kooragoal\\": "src/"
+        }
+    }
+}
