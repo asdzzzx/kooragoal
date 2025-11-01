@@ -17,6 +17,7 @@ yacine-tv-football/
 │   └── Services/
 │       ├── ApiClient.php
 │       ├── Container.php
+│       ├── DatabaseInitializer.php (تهيئة تلقائية للجداول وإنشاء إدمن افتراضي)
 │       ├── Database.php
 │       ├── Logger.php
 │       ├── Scheduler.php
