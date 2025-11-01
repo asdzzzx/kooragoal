@@ -17,7 +17,23 @@ class Database
             $config['password'],
             $config['options'] ?? []
         );
-        $this->pdo->exec('SET time_zone = "+00:00"');
+
+        try {
+            $this->pdo->exec('SET time_zone = "+00:00"');
+        } catch (PDOException $exception) {
+            $message = $exception->getMessage();
+            if (
+                stripos($message, 'super privilege') !== false ||
+                stripos($message, 'access denied') !== false ||
+                stripos($message, 'unknown or incorrect time zone') !== false
+            ) {
+                // Shared hosting environments (such as cPanel) often block SET time_zone without SUPER privileges.
+                // Swallow the exception so the application can continue using the host default time zone.
+                return;
+            }
+
+            throw $exception;
+        }
     }
 
     public function getConnection(): PDO
