@@ -1,6 +1,6 @@
 <?php
-if (!isset(\$pageTitle)) {
-    \$pageTitle = 'Kooragoal Admin';
+if (!isset($pageTitle)) {
+    $pageTitle = 'Kooragoal Admin';
 }
 ?>
 <!DOCTYPE html>
@@ -8,12 +8,13 @@ if (!isset(\$pageTitle)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars(\$pageTitle) ?></title>
+    <title><?= htmlspecialchars($pageTitle) ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
+<body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container-fluid">
         <a class="navbar-brand" href="/admin/index.php">Kooragoal Admin</a>
@@ -30,4 +31,4 @@ if (!isset(\$pageTitle)) {
         </div>
     </div>
 </nav>
-<div class="container">
+<div class="container-fluid py-4">

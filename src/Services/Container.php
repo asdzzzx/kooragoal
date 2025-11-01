@@ -32,7 +32,7 @@ class Container
             case ApiClient::class:
                 return new ApiClient($this->config['api'], $this->get(Logger::class), $this->get(Database::class));
             case Logger::class:
-                return new Logger(__DIR__ . '/../../storage/logs/app.log');
+                return new Logger(__DIR__ . '/../../logs/app.log');
             case Scheduler::class:
                 return new Scheduler($this->get(Database::class), $this->get(ApiClient::class), $this->get(Logger::class));
             case AuthManager::class:

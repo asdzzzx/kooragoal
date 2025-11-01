@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# Allow direct access to existing files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Admin assets
+RewriteRule ^admin/(.*)$ admin/$1 [L]
+
+# Public friendly routes
+RewriteRule ^league/(\d+)$ public/league.php?id=$1 [L,QSA]
+RewriteRule ^match/(\d+)$ public/match.php?id=$1 [L,QSA]
+RewriteRule ^events/(\d+)$ public/events.php?fixture=$1 [L,QSA]
+RewriteRule ^stats/(\d+)$ public/stats.php?fixture=$1 [L,QSA]
+RewriteRule ^standings/(\d+)$ public/standings.php?league=$1 [L,QSA]
+RewriteRule ^scorers/(\d+)$ public/scorers.php?league=$1 [L,QSA]
+RewriteRule ^live$ public/live.php [L,QSA]
+RewriteRule ^today$ public/today.php [L,QSA]
+
+# Default route
+RewriteRule ^$ public/index.php [L]
+RewriteRule ^(.*)$ public/$1 [L,QSA]

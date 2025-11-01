@@ -1,37 +1,37 @@
 <?php
-require_once __DIR__ . '/includes/bootstrap.php';
+require_once __DIR__ . '/../includes/bootstrap.php';
 
 use Kooragoal\Services\Database;
 
-\$db = \$container->get(Database::class);
-\$id = (int) (\$_GET['id'] ?? 0);
+$db = $container->get(Database::class);
+$id = (int) ($_GET['id'] ?? 0);
 
-\$fixture = \$db->fetch('SELECT f.*, l.name as league_name, th.name as home_name, ta.name as away_name FROM fixtures f
+$fixture = $db->fetch('SELECT f.*, l.name as league_name, th.name as home_name, ta.name as away_name FROM fixtures f
     JOIN leagues l ON l.id = f.league_id
     JOIN teams th ON th.id = f.home_team_id
     JOIN teams ta ON ta.id = f.away_team_id
-    WHERE f.id = :id', ['id' => \$id]);
+    WHERE f.id = :id', ['id' => $id]);
 
-if (!\$fixture) {
+if (!$fixture) {
     http_response_code(404);
     echo 'المباراة غير موجودة';
     exit;
 }
 
-\$pageTitle = 'مباراة ' . \$fixture['home_name'] . ' ضد ' . \$fixture['away_name'];
+$pageTitle = 'مباراة ' . $fixture['home_name'] . ' ضد ' . $fixture['away_name'];
 include __DIR__ . '/includes/site-header.php';
 ?>
 <div class="row">
     <div class="col-md-8">
         <div class="card mb-3">
             <div class="card-body">
-                <h2 class="h4 mb-3"><?= htmlspecialchars(\$fixture['league_name']) ?></h2>
+                <h2 class="h4 mb-3"><?= htmlspecialchars($fixture['league_name']) ?></h2>
                 <div class="d-flex justify-content-between align-items-center">
-                    <span><?= htmlspecialchars(\$fixture['home_name']) ?></span>
-                    <strong class="fs-3"><?= (int) \$fixture['goals_home'] ?> - <?= (int) \$fixture['goals_away'] ?></strong>
-                    <span><?= htmlspecialchars(\$fixture['away_name']) ?></span>
+                    <span><?= htmlspecialchars($fixture['home_name']) ?></span>
+                    <strong class="fs-3"><?= (int) $fixture['goals_home'] ?> - <?= (int) $fixture['goals_away'] ?></strong>
+                    <span><?= htmlspecialchars($fixture['away_name']) ?></span>
                 </div>
-                <p class="text-muted mt-3">الحالة: <?= htmlspecialchars(\$fixture['status_long']) ?> | التاريخ: <?= htmlspecialchars(\$fixture['date']) ?></p>
+                <p class="text-muted mt-3">الحالة: <?= htmlspecialchars($fixture['status_long']) ?> | التاريخ: <?= htmlspecialchars($fixture['date']) ?></p>
             </div>
         </div>
 
@@ -64,9 +64,9 @@ $(function(){
     }
 
     function scheduleRefresh(){
-        loadSection('/stats/<?= (int) \$fixture['id'] ?>', '#statsContainer');
-        loadSection('/events/<?= (int) \$fixture['id'] ?>', '#eventsContainer');
-        loadSection('/lineups.php?fixture=<?= (int) \$fixture['id'] ?>', '#lineupsContainer');
+        loadSection('/stats/<?= (int) $fixture['id'] ?>', '#statsContainer');
+        loadSection('/events/<?= (int) $fixture['id'] ?>', '#eventsContainer');
+        loadSection('/lineups.php?fixture=<?= (int) $fixture['id'] ?>', '#lineupsContainer');
     }
 
     scheduleRefresh();
