@@ -43,7 +43,20 @@ try {
         error_log('Database connection failed: ' . $exception->getMessage());
     }
 
-    kooragoal_render_bootstrap_error('تعذر الاتصال بقاعدة البيانات. تأكد من بيانات الدخول في config/config.php ومن إنشاء قاعدة البيانات على الخادم.');
+    $userMessage = 'تعذر الاتصال بقاعدة البيانات. تأكد من بيانات الدخول في config/config.php ومن إنشاء قاعدة البيانات على الخادم.';
+
+    if ($exception instanceof \PDOException) {
+        $error = $exception->getMessage();
+        if (stripos($error, 'unknown database') !== false) {
+            $userMessage = 'قاعدة البيانات المحددة غير موجودة. تأكد من إنشائها في cPanel وربطها بالمستخدم ثم حدّث اسمها في config/config.php.';
+        } elseif (stripos($error, 'access denied') !== false) {
+            $userMessage = 'فشل تسجيل الدخول إلى MySQL. يرجى التحقق من اسم المستخدم وكلمة المرور وصلاحيات المستخدم في cPanel.';
+        } elseif (stripos($error, 'could not find driver') !== false) {
+            $userMessage = 'امتداد PDO MySQL غير مفعّل على الخادم. اطلب من مزود الاستضافة تفعيل pdo_mysql أو قم بتمكينه من لوحة التحكم.';
+        }
+    }
+
+    kooragoal_render_bootstrap_error($userMessage);
 }
 
 try {
