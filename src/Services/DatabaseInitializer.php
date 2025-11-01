@@ -6,12 +6,30 @@ use RuntimeException;
 
 class DatabaseInitializer
 {
-    private Database $db;
-    private string $schemaFile;
-    private ?Logger $logger;
-    private bool $initialised = false;
+    /**
+     * @var Database
+     */
+    private $db;
 
-    private array $requiredTables = [
+    /**
+     * @var string
+     */
+    private $schemaFile;
+
+    /**
+     * @var Logger|null
+     */
+    private $logger;
+
+    /**
+     * @var bool
+     */
+    private $initialised = false;
+
+    /**
+     * @var string[]
+     */
+    private $requiredTables = [
         'leagues',
         'teams',
         'players',
